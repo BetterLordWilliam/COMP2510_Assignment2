@@ -23,6 +23,4 @@ int main(int argc, char *argv[]) {
     readFile();
 
     simulateFunction();
-
-    return 0;
 }
