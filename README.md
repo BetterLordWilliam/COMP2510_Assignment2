@@ -2,7 +2,7 @@
 
 Check stuff of (X) or if a new task is discovered, add it.
 
-<br></br>
+<hr>
 
 ## Thoughts ##
 * Create structs for particles and velocities.
@@ -19,7 +19,7 @@ Check stuff of (X) or if a new task is discovered, add it.
 
 If you have any thoughts, please add them to the readme.
 
-<br></br>
+<hr>
 
 ## Tasks ##
 
