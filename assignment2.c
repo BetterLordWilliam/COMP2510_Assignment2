@@ -6,7 +6,7 @@
 // Method headers
 Particle** readFile(int *pa);
 void simulateFunction();
-void writeFile(Particle **p);
+void writeFile(Particle **p, int *particleCount);
 void printErrorExit();
 Particle* makeParticle(int px, int py, int vx, int vy);
 void destroyParticle(Particle *p);
@@ -129,60 +129,28 @@ void simulateFunction(Particle **p) {
         // Increment the particles position by their velocities
         for (int i = 0; i < pC; i++) {
             Particle *pT = p[i];
+            int nX = pT->pX + pT->vX;
+            int nY = pT->pY + pT->vY;
 
-            // Confirm that the movement is in bounds
-            if (pT->pX + pT->vX < maxX && pT->pX + pT->vX > 0 &&
-                pT->pY + pT->pY < maxY && pT->pY + pT->vY > 0) {
+            int rfX = 1;
+            int rfY = 1;
                 
-                pT->pX += pT->vX; 
-                pT->pY += pT->vY;
-           
-                // Handle collision
-
-            // Bound cases 
-            } else {
-                // Changed X is too big
-                if (pT->pX + pT->vX >= maxX) {
-                    // Y is too big too
-                    if (pT->pY + pT->pY >= maxY) {
-                        
-
-                    // Y is too small
-                    } else if (pT->pY + pT->pY <= 0) {
-
-
-                    // Y is chill                
-                    } else {
-                        
-                    }
-
-                // Changed X is too small
-                } else if (pT->pX + pT->vX <= 0) {
-                    // Y is too big too
-                    if (pT->pY + pT->pY >= maxY) {
-
-
-                    // Y is too small
-                    } else if (pT->pY + pT->pY <= 0) {
-
-
-                    // Y is chill
-                    } else {
-                        
-                    }
-                }
-            }
+            pT->pX += pT->vX * rfX; 
+            pT->pY += pT->vY * rfY;
         }        
     }
 }
 
 /*
-*   writeFile: Makes array of simulation and writes to output file
+*   writeFile:  Makes array of simulation and writes to output file
+*   param **p:  pointer to memory with particles
 */
-void writeFile(Particle **p,){
+void writeFile(Particle **p, int *particleCount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
+    const int pc = particleCount; 
+    int count = 0;
 
     char **array = (char **)malloc(rows * sizeof(char *));
     for (int i = 0; i < rows; i++){
@@ -196,9 +164,4 @@ void writeFile(Particle **p,){
             }
         }
     }
-
-
-
-
-    
 }
