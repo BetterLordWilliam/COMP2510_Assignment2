@@ -12,6 +12,6 @@ typedef struct{
 // Main Method
 int main()
 {
-    
+
     return 0;
 }
