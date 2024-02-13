@@ -92,28 +92,35 @@ void destroyParticle(Particle *p) {
 */
 Particle** readFile(int *particleCount) {
     
-    // update particle counter, read number of lines in input file
+    // update particle counter
+    // read number of lines in input file, subtract first two lines to get correct count
     char check = 0;
     while ((check = fgetc(in)) != 'E') {
         if (check = '\n') *particleCount++;
     }
-    // subtract first two lines that indicate border limits to get correct count
     *particleCount = *particleCount - 2;
+
+    // create array that stores the particles
+    Particle **pArr = malloc(*particleCount * sizeof(Particle));
 
     // set buffer back to particle position
     char buff[10];
     fseek(in, 0, SEEK_SET);
     fgets(buff, 10, in);
     fgets(buff, 10, in); // pointer should now be at the correct line to read particles
+    int count = 0;
     while(fgets(buff, 10, in) != NULL) {
         int pXtemp = 0;
         int pYtemp = 0;
         int vXtemp = 0;
         int vYtemp = 0;
-        sscanf(buff, "%d,%d,%d,%d", &pXtemp, &pYtemp, &vXtemp, &vYtemp); 
-        Particle *p = makeParticle(pXtemp, pYtemp, vXtemp, vYtemp);
+        if (sscanf(buff, "%d,%d,%d,%d", &pXtemp, &pYtemp, &vXtemp, &vYtemp) != EOF) {
+            Particle *p = makeParticle(pXtemp, pYtemp, vXtemp, vYtemp);
+            pArr[count++] = p; 
+        } 
     }
     
+    return pArr;
 }
 
 /*

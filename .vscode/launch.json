@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/BCIT/L1/Sem2/COMP2510_ProceduralProgramming/COMP2510_Assignment2",
-      "program": "d:/BCIT/L1/Sem2/COMP2510_ProceduralProgramming/COMP2510_Assignment2/build/Debug/outDebug",
+      "cwd": "c:/Users/calvi/Folders/BCIT/CST/TERM2/codes/COMP2510_Assignment2",
+      "program": "c:/Users/calvi/Folders/BCIT/CST/TERM2/codes/COMP2510_Assignment2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
