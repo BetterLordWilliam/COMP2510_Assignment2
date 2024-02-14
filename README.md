@@ -23,7 +23,8 @@ If you have any thoughts, please add them to the readme.
 
 ## Tasks ##
 
-* Agree on approach.
-* Implement reading.
-* Implement simulating.
-* Implement writing.
+* Agree on approach (X).
+* Implement reading (X).
+* Implement simulating (X).
+* Implement writing (X).
+* Fix it all lol ().
