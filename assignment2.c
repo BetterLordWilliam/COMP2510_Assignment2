@@ -72,7 +72,7 @@ Particle* makeParticle(int px, int py, int vx, int vy) {
     p->pX = px;
     p->pY = py;
     p->vX = vx;
-    p->pY = vy;
+    p->vY = vy;
     return p;
 }
 
