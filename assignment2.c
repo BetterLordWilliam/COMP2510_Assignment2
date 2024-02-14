@@ -176,7 +176,8 @@ void simulateFunction(Particle **p, int *particleCount) {
                     pC -= 2;
                 }
             }
-        }      
+        }
+        cT++;      
     }
 }
 
