@@ -5,8 +5,8 @@
 
 // Method headers
 Particle** readFile(int *pa);
-void simulateFunction();
-void writeFile(Particle **p, int *particlecount);
+void simulateFunction(Particle **p, int *particleCount);
+void writeFile(Particle **p, int *particleCount);
 void printErrorExit();
 Particle* makeParticle(int px, int py, int vx, int vy);
 void destroyParticle(Particle *p);
@@ -44,12 +44,12 @@ int main(int argc, char *argv[]) {
     // Read input file:
     // update the bor
     // get a pointer to an array of particle objects
-    int particlecount = 0;
-    readFile(&particlecount);
+    int particleCount = 0;
+    Particle **particleArray = readFile(&particleCount);
     
     // create 2d array with a border
 
-    simulateFunction();
+    simulateFunction(particleArray, &particleCount);
 }
 
 /*
@@ -103,11 +103,13 @@ Particle** readFile(int *particlecount) {
     // create array that stores the particles
     Particle **pArr = malloc(*particlecount * sizeof(Particle));
 
-    // set buffer back to particle position
+    // set buffer back to beginning
     char buff[10];
     fseek(in, 0, SEEK_SET);
-    fgets(buff, 10, in);
-    fgets(buff, 10, in); // pointer should now be at the correct line to read particles
+    fgets(buff, 10, in); // read max x
+    sscanf(buff, "%d", &maxX);
+    fgets(buff, 10, in); // read max y
+    sscanf(buff, "%d", &maxY);
     int count = 0;
     while(fgets(buff, 10, in) != NULL) {
         int pXtemp = 0;
@@ -119,31 +121,49 @@ Particle** readFile(int *particlecount) {
             pArr[count++] = p; 
         } 
     }
-    
+
     return pArr;
 }
 
 /*
-*   simulateFunction:   Runs the simulation on the particles for the time
-*   param **p:           pointer to memory with particles
+*   simulateFunction:     Runs the simulation on the particles for the time
+*   param **p:            pointer to array with particles
+*   param *particleCount: the number of particles in the array
 */
-void simulateFunction(Particle **p) {
+void simulateFunction(Particle **p, int *particleCount) {
     int cT = 0;
-    int pC = sizeof(p) / sizeof(Particle);
+    int pC = *particleCount;
 
     // Iterate cT as specified by input
     while (cT < time) {
         // Increment the particles position by their velocities
         for (int i = 0; i < pC; i++) {
             Particle *pT = p[i];
+            // new positions
             int nX = pT->pX + pT->vX;
             int nY = pT->pY + pT->vY;
 
-            int rfX = 1;
-            int rfY = 1;
+            // check x position, rebound and update velocity if necessary
+            if (nX < 0) {
+                nX = -nX;
+                pT->vX = -(pT->vX);
+            }
+            else if (nX > maxX - 1) {
+                nX = (maxX - (nX - maxX) - 1);
+                pT->vX = -(pT->vX);
+            }
+            // check y position, rebound and update velocity if necessary
+            if (nY < 0) {
+                nY = -nY;
+                pT->vY = -(pT->vY);
+            }
+            else if (nY > maxY - 1) {
+                nY = (maxY - (nY - maxY) - 1);
+                pT->vY = -(pT->vY);
+            }
                 
-            pT->pX += pT->vX * rfX; 
-            pT->pY += pT->vY * rfY;
+            // pT->pX += pT->vX * rfX; 
+            // pT->pY += pT->vY * rfY;
         }        
     }
 }
