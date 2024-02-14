@@ -92,7 +92,6 @@ Particle* makeParticle(int pX, int pY, int vx, int vy) {
 */
 void destroyParticle(Particle *p) {
     free(p);
-    p = NULL;
 }
 
 /* 
@@ -109,7 +108,6 @@ Particle** readFile(int *particleCount) {
     while ((check = fgetc(in)) != 'E') {
        // printf("Here 1 RF --> during number count loop, %d\n", *particleCount);
         if (check == '\n'){
-            printf("pc: %d\n", *particleCount);
             *particleCount = (*particleCount + 1);
         }
     }
@@ -149,14 +147,13 @@ Particle** readFile(int *particleCount) {
 */
 void simulateFunction(Particle **p, int *particleCount) {
     int cT = 0;
-    int pC = *particleCount;
 
     printf("Here SF\n");
     // create 2d array with a border
     // Iterate cT as specified by input
-    while (cT <= time) {
+    while (cT < time) {
         // Increment the particles position by their velocities
-        for (int i = 0; i < pC; i++) {
+        for (int i = 0; i < *particleCount; i++) {
             Particle *pT = p[i];
             // new positions
             int nX = pT->pX + pT->vX;
@@ -187,12 +184,13 @@ void simulateFunction(Particle **p, int *particleCount) {
         }
 
         // finally check if particles collided or not before running next iteration
-        for (int i = 0; i < pC; i++) {
-            for (int j = i + 1; j < pC; j++) {
+        for (int i = 0; i < *particleCount; i++) {
+            for (int j = i + 1; j < *particleCount; j++) {
                 if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
                     destroyParticle(p[i]);
+                    p[i] = NULL;
                     destroyParticle(p[j]);
-                    pC -= 2;
+                    p[j] = NULL;
                 }
             }
         }
@@ -211,7 +209,6 @@ void writeFile(Particle **p, int *particleCount){
     // create 2d array with a border
     int rows = maxY + 2;
     int cols = maxX + 2;
-    const int pc = *particleCount; 
 
     // allocating memory for array
     char **array = (char **)malloc(rows * sizeof(char *));
@@ -229,10 +226,18 @@ void writeFile(Particle **p, int *particleCount){
         }
     }
 
+
     // added particles to array
-    for (int count = 0; count < pc; count++){
-        Particle *pt = p[count];
-        array[(pt->pY) + 1][(pt->pX) + 1] = '+';
+    for (int count = 0; count < *particleCount; count++){
+        Particle *pt;
+        if (p[count] != NULL) {
+            printf("%p\n", p[count]);
+            pt = p[count];
+            printf("%d, %d\n", pt->pX, pt->pY);
+            array[(pt->pY) + 1][(pt->pX) + 1] = '+';
+        } else {
+            continue;
+        }
     }
 
     // writing array to output file
