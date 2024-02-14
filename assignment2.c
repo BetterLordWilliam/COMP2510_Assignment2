@@ -1,3 +1,8 @@
+// Will Otterbein       A##
+// Raymond Xie          A##
+// Lucas Laviolette     A##
+// Calvin Lee           A00922317
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,6 +15,7 @@ void writeFile(Particle **p, int *particleCount);
 void printErrorExit();
 Particle* makeParticle(int px, int py, int vx, int vy);
 void destroyParticle(Particle *p);
+void freeMemory(Particle **pArr, int *particleCount);
 
 // Constants
 FILE *in;
@@ -50,6 +56,9 @@ int main(int argc, char *argv[]) {
     // create 2d array with a border
 
     simulateFunction(particleArray, &particleCount);
+
+    // free up all particles and arrays
+    freeMemory(particleArray, &particleCount);
 }
 
 /*
@@ -226,4 +235,19 @@ void writeFile(Particle **p, int *particleCount){
         free(array[i]);
     }
     free(array);
+}
+
+/*
+*   freeMemory:     Free up any used memory by remaining particles and its
+*                   containing array.
+*   param **p:      pointer to the array containing particles
+*   param *particleCount:   the number of particles remaining in the array
+*/
+void freeMemory(Particle **pArr, int *particleCount) {
+    for (int i = 0; i < *particleCount; i++) {
+        free(pArr[i]);
+        pArr[i] = NULL;
+    }
+    free(pArr);
+    pArr = NULL;
 }
