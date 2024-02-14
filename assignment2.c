@@ -161,10 +161,22 @@ void simulateFunction(Particle **p, int *particleCount) {
                 nY = (maxY - (nY - maxY) - 1);
                 pT->vY = -(pT->vY);
             }
-                
-            // pT->pX += pT->vX * rfX; 
-            // pT->pY += pT->vY * rfY;
-        }        
+
+            // update the position of the particle
+            pT->pX = nX;
+            pT->pY = nY;
+        }
+
+        // finally check if particles collided or not before running next iteration
+        for (int i = 0; i < pC; i++) {
+            for (int j = i + 1; j < pC; j++) {
+                if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
+                    destroyParticle(p[i]);
+                    destroyParticle(p[j]);
+                    pC -= 2;
+                }
+            }
+        }      
     }
 }
 
@@ -173,7 +185,7 @@ void simulateFunction(Particle **p, int *particleCount) {
 *   param **p:              pointer to memory with particles
 *   param *particleCount:   Amount of particles in p 
 */
-void writeFile(Particle **p, int *particlecount){
+void writeFile(Particle **p, int *particleCount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
