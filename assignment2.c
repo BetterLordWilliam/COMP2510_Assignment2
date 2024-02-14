@@ -87,21 +87,21 @@ void destroyParticle(Particle *p) {
 
 /* 
 *   readFile:   reads the file input, assign maxX and maxY and read particles
-*   param *particleCount:   pointer to the variable storing the number of particles
+*   param *particlecount:   pointer to the variable storing the number of particles
 *   returns:    pointer arr
 */
-Particle** readFile(int *particleCount) {
+Particle** readFile(int *particlecount) {
     
     // update particle counter
     // read number of lines in input file, subtract first two lines to get correct count
     char check = 0;
     while ((check = fgetc(in)) != 'E') {
-        if (check = '\n') *particleCount++;
+        if (check = '\n') *particlecount++;
     }
-    *particleCount = *particleCount - 2;
+    *particlecount = *particlecount - 2;
 
     // create array that stores the particles
-    Particle **pArr = malloc(*particleCount * sizeof(Particle));
+    Particle **pArr = malloc(*particlecount * sizeof(Particle));
 
     // set buffer back to beginning
     char buff[10];
@@ -173,7 +173,7 @@ void simulateFunction(Particle **p, int *particleCount) {
 *   param **p:              pointer to memory with particles
 *   param *particleCount:   Amount of particles in p 
 */
-void writeFile(Particle **p, int *particleCount){
+void writeFile(Particle **p, int *particlecount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
