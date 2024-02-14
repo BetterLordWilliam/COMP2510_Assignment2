@@ -96,7 +96,7 @@ Particle** readFile(int *particlecount) {
     // read number of lines in input file, subtract first two lines to get correct count
     char check = 0;
     while ((check = fgetc(in)) != 'E') {
-        if (check = '\n') *particlecount++;
+        if (check == '\n') *particlecount++;
     }
     *particlecount = *particlecount - 2;
 
