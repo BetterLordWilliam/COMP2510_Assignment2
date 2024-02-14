@@ -9,7 +9,7 @@
 // Definitions
 
 // Method headers
-Particle** readFile(int *pa);
+Particle** readFile(int *particleCount);
 void simulateFunction(Particle **p, int *particleCount);
 void writeFile(Particle **p, int *particleCount);
 void printErrorExit();
