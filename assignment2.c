@@ -6,7 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Definitions
+// Structs
+typedef struct {
+    int pX;
+    int pY;
+    int vX;
+    int vY;
+} Particle;
 
 // Method headers
 Particle** readFile(int *particleCount);
@@ -24,14 +30,6 @@ FILE *out;
 int maxX;
 int maxY;
 int time;
-
-// Structs
-typedef struct {
-    int pX;
-    int pY;
-    int vX;
-    int vY;
-} Particle;
 
 /*
 *   main: main method of program
@@ -54,6 +52,9 @@ int main(int argc, char *argv[]) {
     
     // create 2d array with a border
     simulateFunction(particleArray, &particleCount);
+
+    // Create output lol
+    writeFile(particleArray, &particleCount);
 
     // free up all particles and arrays
     freeMemory(particleArray, &particleCount);
@@ -94,21 +95,21 @@ void destroyParticle(Particle *p) {
 
 /* 
 *   readFile:   reads the file input, assign maxX and maxY and read particles
-*   param *particlecount:   pointer to the variable storing the number of particles
+*   param *particleCount:   pointer to the variable storing the number of particles
 *   returns:    pointer arr
 */
-Particle** readFile(int *particlecount) {
+Particle** readFile(int *particleCount) {
     
     // update particle counter
-    // read number of lines in input file, subtract first two lines to get correct count
+    // read number of lines in input file, subtract first three lines to get correct count
     char check = 0;
     while ((check = fgetc(in)) != 'E') {
-        if (check == '\n') *particlecount++;
+        if (check == '\n') *particleCount++;
     }
-    *particlecount = *particlecount - 3;
+    *particleCount = *particleCount - 3;
 
     // create array that stores the particles
-    Particle **pArr = malloc(*particlecount * sizeof(Particle));
+    Particle **pArr = malloc(*particleCount * sizeof(Particle*));
 
     // set buffer back to beginning
     char buff[10];
@@ -117,7 +118,7 @@ Particle** readFile(int *particlecount) {
     sscanf(buff, "%d", &maxX);
     fgets(buff, 10, in); // read max y
     sscanf(buff, "%d", &maxY);
-    fgetx(buff, 10, in); // read time
+    fgets(buff, 10, in); // read time
     sscanf(buff, "%d", &time);
     int count = 0;
     while(fgets(buff, 10, in) != NULL) {
@@ -180,8 +181,8 @@ void simulateFunction(Particle **p, int *particleCount) {
         for (int i = 0; i < pC; i++) {
             for (int j = i + 1; j < pC; j++) {
                 if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
-                    destroyparticle(p[i]);
-                    destroyparticle(p[j]);
+                    destroyParticle(p[i]);
+                    destroyParticle(p[j]);
                     pC -= 2;
                 }
             }
@@ -193,13 +194,13 @@ void simulateFunction(Particle **p, int *particleCount) {
 /*
 *   writefile:              makes array of simulation and writes to output file
 *   param **p:              pointer to memory with particles
-*   param *particlecount:   amount of particles in p 
+*   param *particleCount:   amount of particles in p 
 */
-void writefile(Particle **p, int *particlecount){
+void writeFile(Particle **p, int *particleCount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
-    const int pc = *particlecount; 
+    const int pc = *particleCount; 
 
     //allocating memory for array
     char **array = (char **)malloc(rows * sizeof(char *));
