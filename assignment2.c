@@ -37,7 +37,7 @@ typedef struct {
 *   main: main method of program
 */
 int main(int argc, char *argv[]) {
-    if (argc != 4) {
+    if (argc != 3) {
         return 1;
     }
 
@@ -45,7 +45,6 @@ int main(int argc, char *argv[]) {
     in = fopen(argv[1], "r");
     out = fopen(argv[2], "w");
     if (in == NULL || out == NULL) printErrorExit(); // exit if problem opening files
-    time = atoi(argv[3]);
 
     // Read input file:
     // update the bor
@@ -54,7 +53,6 @@ int main(int argc, char *argv[]) {
     Particle **particleArray = readFile(&particleCount);
     
     // create 2d array with a border
-
     simulateFunction(particleArray, &particleCount);
 
     // free up all particles and arrays
@@ -107,7 +105,7 @@ Particle** readFile(int *particlecount) {
     while ((check = fgetc(in)) != 'E') {
         if (check == '\n') *particlecount++;
     }
-    *particlecount = *particlecount - 2;
+    *particlecount = *particlecount - 3;
 
     // create array that stores the particles
     Particle **pArr = malloc(*particlecount * sizeof(Particle));
@@ -119,6 +117,8 @@ Particle** readFile(int *particlecount) {
     sscanf(buff, "%d", &maxX);
     fgets(buff, 10, in); // read max y
     sscanf(buff, "%d", &maxY);
+    fgetx(buff, 10, in); // read time
+    sscanf(buff, "%d", &time);
     int count = 0;
     while(fgets(buff, 10, in) != NULL) {
         int pXtemp = 0;

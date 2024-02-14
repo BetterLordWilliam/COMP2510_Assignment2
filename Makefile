@@ -18,7 +18,6 @@ all: $(TARGET)
 $(TARGET): $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)
 
-
 convert_input: $(INPUT)
 	dos2unix $(INPUT)
 
