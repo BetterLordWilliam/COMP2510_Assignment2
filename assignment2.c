@@ -202,36 +202,37 @@ void writeFile(Particle **p, int *particleCount){
     int cols = maxX + 2;
     const int pc = *particleCount; 
 
-    //allocating memory for array
+    // allocating memory for array
     char **array = (char **)malloc(rows * sizeof(char *));
     for (int i = 0; i < rows; i++){
         array[i] = (char *)malloc(cols * sizeof(char));
     }
 
-    //printing border on array
+    // printing border of array
     for (int i = 0; i < rows; i++){
         for (int j = 0; j < cols; j++){
             if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1) {
                 array[i][j] = '*';
             }
+            else array[i][j] = ' ';
         }
     }
 
-    //added particles to array
+    // added particles to array
     for (int count = 0; count < pc; count++){
         Particle *pt = p[count];
         array[(pt->pY) + 1][(pt->pX) + 1] = '+';
     }
 
-    //writing array to output file
+    // writing array to output file
     for (int i = 0; i < rows; i++){
         for (int j = 0; j < cols; j++){
-            fprintf(out, "%c ", array[i][j]);
+            fprintf(out, "%c", array[i][j]);
         }
         fprintf(out, "\n");
     }
 
-    //free array
+    // free array
     for (int i = 0; i < rows; i++){
         free(array[i]);
     }
