@@ -1,4 +1,4 @@
-// Will Otterbein       A##
+// Will Otterbein       A01372608
 // Raymond Xie          A##
 // Lucas Laviolette     A##
 // Calvin Lee           A00922317
@@ -13,7 +13,7 @@ Particle** readFile(int *pa);
 void simulateFunction(Particle **p, int *particleCount);
 void writeFile(Particle **p, int *particleCount);
 void printErrorExit();
-Particle* makeParticle(int px, int py, int vx, int vy);
+Particle* makeParticle(int pX, int pY, int vx, int vy);
 void destroyParticle(Particle *p);
 void freeMemory(Particle **pArr, int *particleCount);
 
@@ -76,10 +76,10 @@ void printErrorExit() {
 *   params:         integer values for x position, y position, x velocity, y velocity
 *   return:         pointer to the particle object
 */
-Particle* makeParticle(int px, int py, int vx, int vy) {
+Particle* makeParticle(int pX, int pY, int vx, int vy) {
     Particle *p = malloc(sizeof(Particle));
-    p->pX = px;
-    p->pY = py;
+    p->pX = pX;
+    p->pY = pY;
     p->vX = vx;
     p->vY = vy;
     return p;
@@ -180,8 +180,8 @@ void simulateFunction(Particle **p, int *particleCount) {
         for (int i = 0; i < pC; i++) {
             for (int j = i + 1; j < pC; j++) {
                 if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
-                    destroyParticle(p[i]);
-                    destroyParticle(p[j]);
+                    destroyparticle(p[i]);
+                    destroyparticle(p[j]);
                     pC -= 2;
                 }
             }
@@ -191,15 +191,15 @@ void simulateFunction(Particle **p, int *particleCount) {
 }
 
 /*
-*   writeFile:              Makes array of simulation and writes to output file
+*   writefile:              makes array of simulation and writes to output file
 *   param **p:              pointer to memory with particles
-*   param *particleCount:   Amount of particles in p 
+*   param *particlecount:   amount of particles in p 
 */
-void writeFile(Particle **p, int *particleCount){
+void writefile(Particle **p, int *particlecount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
-    const int pC = *particleCount; 
+    const int pc = *particlecount; 
 
     //allocating memory for array
     char **array = (char **)malloc(rows * sizeof(char *));
@@ -217,9 +217,9 @@ void writeFile(Particle **p, int *particleCount){
     }
 
     //added particles to array
-    for (int count = 0; count < pC; count++){
-        Particle *pT = p[count];
-        array[(pT->pY) + 1][(pT->pX) + 1] = '+';
+    for (int count = 0; count < pc; count++){
+        Particle *pt = p[count];
+        array[(pt->pY) + 1][(pt->pX) + 1] = '+';
     }
 
     //writing array to output file
