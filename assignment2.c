@@ -173,7 +173,7 @@ void simulateFunction(Particle **p, int *particleCount) {
 *   param **p:              pointer to memory with particles
 *   param *particleCount:   Amount of particles in p 
 */
-void writeFile(Particle **p, int *particlecount){
+void writeFile(Particle **p, int *particleCount){
     
     int rows = maxY + 2;
     int cols = maxX + 2;
