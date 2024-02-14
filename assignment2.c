@@ -39,6 +39,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    printf("Here MM\n");
+    
     // Read command line args
     in = fopen(argv[1], "r");
     out = fopen(argv[2], "w");
@@ -57,7 +59,7 @@ int main(int argc, char *argv[]) {
     writeFile(particleArray, &particleCount);
 
     // free up all particles and arrays
-    freeMemory(particleArray, &particleCount);
+    // freeMemory(particleArray, &particleCount);
 }
 
 /*
@@ -100,11 +102,16 @@ void destroyParticle(Particle *p) {
 */
 Particle** readFile(int *particleCount) {
     
+    // create 2d array with a border
     // update particle counter
     // read number of lines in input file, subtract first three lines to get correct count
     char check = 0;
     while ((check = fgetc(in)) != 'E') {
-        if (check == '\n') *particleCount++;
+       // printf("Here 1 RF --> during number count loop, %d\n", *particleCount);
+        if (check == '\n'){
+            printf("pc: %d\n", *particleCount);
+            *particleCount = (*particleCount + 1);
+        }
     }
     *particleCount = *particleCount - 3;
 
@@ -144,8 +151,10 @@ void simulateFunction(Particle **p, int *particleCount) {
     int cT = 0;
     int pC = *particleCount;
 
+    printf("Here SF\n");
+    // create 2d array with a border
     // Iterate cT as specified by input
-    while (cT < time) {
+    while (cT <= time) {
         // Increment the particles position by their velocities
         for (int i = 0; i < pC; i++) {
             Particle *pT = p[i];
@@ -198,6 +207,8 @@ void simulateFunction(Particle **p, int *particleCount) {
 */
 void writeFile(Particle **p, int *particleCount){
     
+    printf("Here WF\n");
+    // create 2d array with a border
     int rows = maxY + 2;
     int cols = maxX + 2;
     const int pc = *particleCount; 
@@ -229,7 +240,8 @@ void writeFile(Particle **p, int *particleCount){
         for (int j = 0; j < cols; j++){
             fprintf(out, "%c", array[i][j]);
         }
-        fprintf(out, "\n");
+        if (i != rows - 1)
+            fprintf(out, "\n");
     }
 
     // free array
@@ -246,6 +258,8 @@ void writeFile(Particle **p, int *particleCount){
 *   param *particleCount:   the number of particles remaining in the array
 */
 void freeMemory(Particle **pArr, int *particleCount) {
+    printf("Here FM\n");
+    // create 2d array with a border
     for (int i = 0; i < *particleCount; i++) {
         free(pArr[i]);
         pArr[i] = NULL;
