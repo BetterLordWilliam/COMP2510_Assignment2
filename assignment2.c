@@ -165,7 +165,7 @@ void simulateFunction(Particle **p, int *particleCount) {
                 pT->vX = -(pT->vX);
             }
             else if (nX > maxX - 1) {
-                nX = (maxX - (nX - maxX) - 1);
+                nX = (maxX - (nX - maxX));
                 pT->vX = -(pT->vX);
             }
             // check y position, rebound and update velocity if necessary
@@ -174,9 +174,11 @@ void simulateFunction(Particle **p, int *particleCount) {
                 pT->vY = -(pT->vY);
             }
             else if (nY > maxY - 1) {
-                nY = (maxY - (nY - maxY) - 1);
+                nY = (maxY - (nY - maxY));
                 pT->vY = -(pT->vY);
             }
+
+            printf("pX%d, pY%d\n", nX, nY);
 
             // update the position of the particle
             pT->pX = nX;
@@ -186,10 +188,10 @@ void simulateFunction(Particle **p, int *particleCount) {
         // finally check if particles collided or not before running next iteration
         for (int i = 0; i < *particleCount; i++) {
             for (int j = i + 1; j < *particleCount; j++) {
-                if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
-                    destroyParticle(p[i]);
+                if (p[i] != NULL && p[j] != NULL && (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY)) {
+                    //destroyParticle(p[i]);
                     p[i] = NULL;
-                    destroyParticle(p[j]);
+                    //destroyParticle(p[j]);
                     p[j] = NULL;
                 }
             }
@@ -234,7 +236,7 @@ void writeFile(Particle **p, int *particleCount){
             printf("%p\n", p[count]);
             pt = p[count];
             printf("%d, %d\n", pt->pX, pt->pY);
-            array[(pt->pY) + 1][(pt->pX) + 1] = '+';
+            array[maxY - (pt->pY)][(pt->pX) + 1] = '+';
         } else {
             continue;
         }
