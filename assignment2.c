@@ -126,6 +126,11 @@ Particle** readFile(int *particleCount) {
     fgets(buff, 10, in); // read time
     sscanf(buff, "%d", &time);
     int count = 0;
+
+    // Handle too small bounds
+    if (maxX <= 0 || maxY <= 0)
+        printErrorExit();
+
     while(fgets(buff, 10, in) != NULL) {
         int pXtemp = 0;
         int pYtemp = 0;
