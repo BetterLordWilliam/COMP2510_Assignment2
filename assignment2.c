@@ -1,6 +1,6 @@
 // Will Otterbein       A01372608
-// Raymond Xie          A##
-// Lucas Laviolette     A##
+// Raymond Xie          A01343016
+// Lucas Laviolette     A01362479
 // Calvin Lee           A00922317
 
 #include <stdio.h>
