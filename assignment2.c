@@ -134,6 +134,8 @@ Particle** readFile(int *particleCount) {
         int vXtemp = 0;
         int vYtemp = 0;
         if (sscanf(buff, "%d,%d,%d,%d", &pXtemp, &pYtemp, &vXtemp, &vYtemp) != EOF) {
+            if (pXtemp > maxX || pYtemp > maxY)
+                printErrorExit();
             Particle *p = makeParticle(pXtemp, pYtemp, vXtemp, vYtemp);
             pArr[count++] = p; 
         } 
