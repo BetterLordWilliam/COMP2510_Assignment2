@@ -39,8 +39,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("Here MM\n");
-    
     // Read command line args
     in = fopen(argv[1], "r");
     out = fopen(argv[2], "w");
@@ -58,8 +56,7 @@ int main(int argc, char *argv[]) {
     // Create output lol
     writeFile(particleArray, &particleCount);
 
-    // free up all particles and arrays
-    // freeMemory(particleArray, &particleCount);
+    return 0;
 }
 
 /*
@@ -153,50 +150,57 @@ Particle** readFile(int *particleCount) {
 void simulateFunction(Particle **p, int *particleCount) {
     int cT = 0;
 
-    printf("Here SF\n");
     // create 2d array with a border
     // Iterate cT as specified by input
     while (cT < time) {
         // Increment the particles position by their velocities
         for (int i = 0; i < *particleCount; i++) {
             Particle *pT = p[i];
-            // new positions
-            int nX = pT->pX + pT->vX;
-            int nY = pT->pY + pT->vY;
 
-            // check x position, rebound and update velocity if necessary
-            if (nX < 0) {
-                nX = -nX;
-                pT->vX = -(pT->vX);
-            }
-            else if (nX > maxX - 1) {
-                nX = (maxX - (nX - maxX));
-                pT->vX = -(pT->vX);
-            }
-            // check y position, rebound and update velocity if necessary
-            if (nY < 0) {
-                nY = -nY;
-                pT->vY = -(pT->vY);
-            }
-            else if (nY > maxY - 1) {
-                nY = (maxY - (nY - maxY));
-                pT->vY = -(pT->vY);
-            }
+            // iterate through movement if particle exists
+            if (pT != NULL) {
+                int xMove = pT->vX;
+                int yMove = pT->vY;
+                
+                // iterate x position
+                while (xMove != 0) {
+                    // new position
+                    int nX = pT->pX + (xMove > 0 ? 1 : -1);
 
-            printf("pX%d, pY%d\n", nX, nY);
+                    // update x pos, flip velocity if out of bounds
+                    if (nX < 0 || nX > maxX - 1) {
+                        pT->vX = -(pT->vX);
+                        xMove = -xMove;
+                        pT->pX = nX < 0 ? -nX : nX > maxX - 1 ? maxX - 2 : nX;
+                    }
+                    else pT->pX = nX;
 
-            // update the position of the particle
-            pT->pX = nX;
-            pT->pY = nY;
+                    xMove = xMove > 0 ? xMove - 1 : xMove + 1;
+                }
+                while (yMove != 0) {
+                    // new position
+                    int nY = pT->pY + (yMove > 0 ? 1 : -1);
+
+                    // update y pos, flip velocity if out of bounds
+                    if (nY < 0 || nY > maxY - 1) {
+                        pT->vY = -(pT->vY);
+                        yMove = -yMove;
+                        pT->pY = nY < 0 ? -nY : nY > maxY - 1 ? maxY - 2 : nY;
+                    }
+                    else pT->pY = nY;
+
+                    yMove = yMove > 0 ? yMove - 1 : yMove + 1;
+                }
+            }
         }
 
         // finally check if particles collided or not before running next iteration
         for (int i = 0; i < *particleCount; i++) {
             for (int j = i + 1; j < *particleCount; j++) {
-                if (p[i] != NULL && p[j] != NULL && (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY)) {
-                    //destroyParticle(p[i]);
+                if (p[i]->pX == p[j]->pX && p[i]->pY == p[j]->pY) {
+                    destroyParticle(p[i]);
                     p[i] = NULL;
-                    //destroyParticle(p[j]);
+                    destroyParticle(p[j]);
                     p[j] = NULL;
                 }
             }
@@ -211,8 +215,6 @@ void simulateFunction(Particle **p, int *particleCount) {
 *   param *particleCount:   amount of particles in p 
 */
 void writeFile(Particle **p, int *particleCount){
-    
-    printf("Here WF\n");
     // create 2d array with a border
     int rows = maxY + 2;
     int cols = maxX + 2;
@@ -238,9 +240,7 @@ void writeFile(Particle **p, int *particleCount){
     for (int count = 0; count < *particleCount; count++){
         Particle *pt;
         if (p[count] != NULL) {
-            printf("%p\n", p[count]);
             pt = p[count];
-            printf("%d, %d\n", pt->pX, pt->pY);
             array[maxY - (pt->pY)][(pt->pX) + 1] = '+';
         } else {
             continue;
